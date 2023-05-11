@@ -2,8 +2,11 @@ package com.calendar.service;
 
 import com.calendar.domain.Calendar;
 import com.calendar.repository.CalendarRepository;
+import com.calendar.utils.CastEntityUtil;
 import com.calendar.utils.Helper;
+import com.calendar.vo.GetAllCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -61,11 +64,15 @@ public class CalendarService extends BaseService{
         return myCalendar;
     }
 
-    public Iterable<Calendar> getAllCalendar(){
-        Iterable<Calendar> allCalendarInfo = calendarRepository.findAllByIsPublic();
-//        for (Calendar calendar:allCalendarInfo){
-//
-//        }
-        return allCalendarInfo;
+    public List<GetAllCalendar> getAllCalendar(){
+        List<Object[]> findAllByIsPublic = calendarRepository.findAllByIsPublic();
+        try {
+            List<GetAllCalendar> getAllCalendars = CastEntityUtil.castEntity(findAllByIsPublic, GetAllCalendar.class);
+            return getAllCalendars;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 }
