@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.*;
 
 @Service
@@ -59,20 +60,48 @@ public class CalendarService extends BaseService{
             calendarItem.put("comments", calendar.getComments());
             calendarItem.put("isPublic", calendar.getIsPublic());
             calendarItem.put("id", calendar.getId());
+            calendarItem.put("userId", calendar.getUserId());
             myCalendar.add(calendarItem);
         }
         return myCalendar;
     }
 
-    public List<GetAllCalendar> getAllCalendar(){
-        List<Object[]> findAllByIsPublic = calendarRepository.findAllByIsPublic();
+    public List<Object> getAllCalendar(String date) throws ParseException {
+        //解析date，转换为时间戳
+        int dateTime = Helper.dateToStamp(date);
+        List<Object[]> findAllByIsPublic = calendarRepository.findAllByIsPublic(dateTime);
         try {
             List<GetAllCalendar> getAllCalendars = CastEntityUtil.castEntity(findAllByIsPublic, GetAllCalendar.class);
-            return getAllCalendars;
+            List<Object> allCalendars = new ArrayList<>();
+            for (GetAllCalendar calendar:getAllCalendars){
+                Map<String,Object> calendarItem = new HashMap<>();
+                calendarItem.put("id",calendar.getId());
+                calendarItem.put("startTime",Helper.stampToDate(calendar.getStartTime(), "Y.M.d"));
+                calendarItem.put("endTime",Helper.stampToDate(calendar.getEndTime(), "Y.M.d"));
+                calendarItem.put("comments",calendar.getComments());
+                calendarItem.put("nickName",calendar.getNickName());
+                calendarItem.put("status",calendar.getStatus());
+                calendarItem.put("photo",calendar.getPhoto());
+                allCalendars.add(calendarItem);
+            }
+            return allCalendars;
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Boolean updateCalendar(Calendar calendar){
+        Calendar result = calendarRepository.save(calendar);
+        if(result.getId()!=null){
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean deleteCalendar(Integer id){
+        calendarRepository.deleteById(id);
+        return true;
     }
 }

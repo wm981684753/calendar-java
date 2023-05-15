@@ -5,10 +5,9 @@ import com.calendar.interceptor.LoginRequired;
 import com.calendar.service.CalendarService;
 import com.calendar.vo.GetAllCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,9 +38,21 @@ public class CalendarController {
         return calendarService.getMyCalendar();
     }
 
-    @GetMapping("/allCalendar")
+    @GetMapping("/allCalendar/{date}")
     @LoginRequired
-    public List<GetAllCalendar> getAllCalendar(){
-        return calendarService.getAllCalendar();
+    public List<Object> getAllCalendar(@PathVariable(value="date",required = true) String date) throws ParseException {
+        return calendarService.getAllCalendar(date);
+    }
+    
+    @PostMapping("updateCalendar")
+    @LoginRequired
+    public Boolean updateCalendar(Calendar calendar){
+        return calendarService.updateCalendar(calendar);
+    }
+
+    @PostMapping("deleteCalendar")
+    @LoginRequired
+    public Boolean deleteCalendar(@RequestParam(value = "id",required = true) Integer id){
+        return calendarService.deleteCalendar(id);
     }
 }

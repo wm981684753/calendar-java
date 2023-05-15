@@ -31,9 +31,9 @@ public class Helper {
     public static int dateToStamp(String s) throws ParseException {
 
         //设置时间模版
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = simpleDateFormat.parse(s);
-        //        res = String.valueOf(ts);
-        return (int)date.getTime();
+        long nt = date.getTime()/1000;
+        return (int)nt;
     }
 }

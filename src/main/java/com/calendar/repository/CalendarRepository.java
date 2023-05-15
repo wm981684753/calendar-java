@@ -16,7 +16,7 @@ public interface CalendarRepository extends CrudRepository<Calendar, Integer> {
 
     Iterable<Calendar> findByUserIdOrderByEndTimeDesc(Integer userId);
 
-    @Query(value = "SELECT c.id, c.start_time, c.end_time, c.comments,u.nick_name,(case when UNIX_TIMESTAMP()>c.end_time then 0 else 1 end) as status FROM calendar c,user u where c.user_id=u.id and c.public=1 order by c.end_time desc",nativeQuery = true)
-    List<Object[]> findAllByIsPublic();
+    @Query(value = "SELECT c.id, c.start_time, c.end_time, c.comments,u.nick_name,u.photo,(case when UNIX_TIMESTAMP()>c.end_time then 0 else 1 end) as status FROM calendar c,user u where c.user_id=u.id and c.public=1 and c.start_time<=:dateTime and c.end_time>=:dateTime order by c.end_time desc",nativeQuery = true)
+    List<Object[]> findAllByIsPublic(int dateTime);
 }
 

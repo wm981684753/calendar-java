@@ -6,6 +6,10 @@ spring:
     username: root
     password: wm981684753
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    time-zone: Asia/Shanghai
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: true
 
 # jwt 配置
 jwt:
