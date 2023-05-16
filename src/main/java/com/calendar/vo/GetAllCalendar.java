@@ -20,14 +20,10 @@ public class GetAllCalendar implements Serializable {
 
     private String nickName;
 
-    private BigInteger status;
-
     private String photo;
 
-    private Integer userId;
+    private BigInteger status;
 
-//    @Column(name = "nick_name")
-//    private String nickName;
 
     public GetAllCalendar() {
 
@@ -41,7 +37,7 @@ public class GetAllCalendar implements Serializable {
         this.status = status;
     }
 
-    public GetAllCalendar(Integer id, Integer startTime, Integer endTime, String comments, String nickName,String photo,Integer userId, BigInteger status) {
+    public GetAllCalendar(Integer id, Integer startTime, Integer endTime, String comments, String nickName,String photo, BigInteger status) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -49,7 +45,6 @@ public class GetAllCalendar implements Serializable {
         this.nickName = nickName;
         this.status = status;
         this.photo = photo;
-        this.userId = userId;
     }
 
     // getters and setters
@@ -101,14 +96,6 @@ public class GetAllCalendar implements Serializable {
 
     public void setPhoto(String photo) {
         this.photo = photo;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 }
 
